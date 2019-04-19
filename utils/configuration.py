@@ -46,14 +46,15 @@ class ModelConfig(BaseConfig):
     )
 
     # Memory CNN
-    self.context_filter_sizes = [3, 4, 5]
+    self.context_filter_sizes = [0, 0, 0]
     self.output_filter_sizes = [3, 4, 5]
-    self.num_channels_total = self.num_channels * \
-        (len(self.context_filter_sizes) + len(self.output_filter_sizes))
+    self.num_channels_total = self.num_channels * len(self.output_filter_sizes)
+    #self.num_channels_total = self.num_channels * \
+    #                         (len(self.context_filter_sizes) + len(self.output_filter_sizes))
 
     colorlog.info("Model configuration")
     pp(vars(self))
-    self.load("model.config")
+    #self.load("model.config")
     self.batch_size = FLAGS.batch_size
     self.save("model.config")
 

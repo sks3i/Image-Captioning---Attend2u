@@ -121,6 +121,9 @@ def train():
               # Calculate the loss for one tower of the CIFAR model. This function
               # constructs the entire CIFAR model but shares the variables across
               # all towers.
+              print('***')
+              print(tower_caption_length[i])
+              print('####')
               inputs = [
                   tower_img_embedding[i],
                   tower_context_length[i],

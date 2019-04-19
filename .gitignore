@@ -2,5 +2,5 @@ data/
 checkpoints/
 assets/
 
-.ipynb_checkpoints
-
+*.ipynb_checkpoints
+**/*.ckpt

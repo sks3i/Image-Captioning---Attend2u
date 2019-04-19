@@ -13,6 +13,8 @@ sequence_loss = tf.contrib.legacy_seq2seq.sequence_loss
 layers = tf.contrib.layers
 arg_scope = tf.contrib.framework.arg_scope
 
+tf.enable_eager_execution()
+
 class CSMN(object):
   """Context Sequence Memory Network"""
   def _embedding_to_hidden(self, input2dim, size, scope='Wh', reuse = True):
@@ -31,6 +33,7 @@ class CSMN(object):
           [-1, size, self.mem_dim]
       )
     return output2dim
+
   def _init_img_mem(self, conv_cnn):
     """
     Returns:
@@ -188,6 +191,7 @@ class CSMN(object):
 
     # Build Memories
     img_mem_A, img_mem_C = self._init_img_mem(conv_cnn)
+    '''
     context_mem_A, context_mem_C = self._init_words_mem(
         context,
         tf.stack([self.batch_size, context_largest_length]),
@@ -196,14 +200,14 @@ class CSMN(object):
         is_first_time = True,
         is_init_B = False
     )
-
+    '''
     if self.is_training:
       output_mem_A, output_mem_B, output_mem_C = self._init_words_mem(
           caption,
           tf.stack([self.batch_size, output_largest_length]),
           output_mask,
           self.max_output_length,
-          is_first_time = False,
+          is_first_time = True,
           is_init_B = True
       )
     else:
@@ -317,20 +321,30 @@ class CSMN(object):
       )
 
       # Memory network computation (mem_A -> attention -> mem_Catt)
-      mem_A = tf.concat([img_mem_A, context_mem_A, output_mem_state_A_], 1)
+      mem_A = tf.concat([img_mem_A, output_mem_state_A_], 1)
+      print(mem_A.get_shape())
+      print('Query:')
+      print(query.get_shape())
       innerp_mem_A = tf.matmul(query, mem_A, adjoint_b=True)
-
+      print('innerp_mem_A')
+      print(innerp_mem_A.get_shape())
+      print('Mem size')
+      print(self.memory_size)
+      print(self.img_memory_size)
+      print(self.max_output_length)
+      print(self.max_context_length)
       memory_sizes = [
           self.img_memory_size,
-          self.max_context_length,
-          self.max_output_length
-      ]
+          self.max_output_length]
+
+      #mem_reshaped = tf.reshape(innerp_mem_A, [-1, self.memory_size])
+      mem_reshaped = tf.reshape(innerp_mem_A, [-1, self.memory_size])
       attention = tf.nn.softmax(
-          tf.reshape(innerp_mem_A, [-1, self.memory_size]),
+          mem_reshaped,
           name='attention'
       )
 
-      img_attention, context_attention, output_attention = \
+      img_attention, output_attention = \
           tf.split(attention, memory_sizes, axis=1)
 
       img_attention = tf.tile(
@@ -340,6 +354,7 @@ class CSMN(object):
           ),
           [1, 1, self.mem_dim]
       )
+      '''
       context_attention = tf.tile(
           tf.reshape(
               context_attention,
@@ -347,6 +362,7 @@ class CSMN(object):
           ),
           [1, 1, self.mem_dim]
       )
+      '''
       output_attention = tf.tile(
           tf.reshape(
               output_attention,
@@ -354,28 +370,35 @@ class CSMN(object):
           ),
           [1, 1, self.mem_dim]
       )
+
       #pool5
       img_weighted_mem_C = tf.reshape(
           img_mem_C * img_attention,
           [self.batch_size, self.mem_dim]
       )
+      '''
       context_weighted_mem_C = tf.expand_dims(
           context_mem_C * context_attention,
           -1
       )
+      '''
       output_weighted_mem_C = tf.expand_dims(
           output_mem_state_C_ * output_attention,
           -1
       )
+      print('output_weighted_mem_C')
+      print(output_weighted_mem_C.get_shape())
 
       # Memory CNN
       pooled_outputs = []
+      '''
       pooled_outputs += self._text_cnn(
           context_weighted_mem_C,
           self.context_filter_sizes,
           self.max_context_length,
           scope = "context"
       )
+      '''
       pooled_outputs += self._text_cnn(
           output_weighted_mem_C,
           self.output_filter_sizes,
@@ -383,8 +406,14 @@ class CSMN(object):
           scope = "output"
       )
 
+
       h_pool = tf.concat(pooled_outputs, 3)
+      print('h_pool')
+      print(h_pool.get_shape())
+      print(self.num_channels_total)
       h_pool_flat = tf.reshape(h_pool, [-1, self.num_channels_total])
+      print('h_pool_flat')
+      print(h_pool_flat.get_shape())
       with arg_scope([layers.fully_connected],
               num_outputs = self.num_channels_total,
               activation_fn = tf.nn.relu,

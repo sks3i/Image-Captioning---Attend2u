@@ -20,13 +20,13 @@ flags.DEFINE_string("img_data_dir",
     "data directory [data]"
 )
 
-flags.DEFINE_integer("max_context_length", 60,
+flags.DEFINE_integer("max_context_length", 0,
     "User contex max length default [60]"
 )
 flags.DEFINE_integer("max_output_length", 16,
     "User contex max length default [60]"
 )
-flags.DEFINE_integer('batch_size', 8,
+flags.DEFINE_integer('batch_size', 4,
     """Number of examples to process in a batch."""
 )
 flags.DEFINE_integer('vocab_size', 40000,
@@ -140,7 +140,7 @@ def read_numpy_format_and_label(filename_queue):
           tf.string_to_number(batch_context_length),
           tf.int32
       ),
-      FLAGS.max_context_length
+      1
   )
   batch_caption_length = tf.minimum(
       tf.cast(
@@ -156,7 +156,7 @@ def read_numpy_format_and_label(filename_queue):
   )
   batch_context_id = tf.py_func(
       token_split_func,
-      [batch_context, FLAGS.max_context_length],
+      [batch_context, 1],
       tf.int32
   )
   batch_caption_id = tf.py_func(
@@ -171,7 +171,7 @@ def read_numpy_format_and_label(filename_queue):
   )
   batch_context_mask = tf.py_func(
       mask_build_func,
-      [batch_context_length, FLAGS.max_context_length],
+      [batch_context_length, 1],
       tf.bool
   )
   batch_caption_mask = tf.py_func(
@@ -197,6 +197,8 @@ def mergers(chunk_l):
     for data in datas:
       newdata.append(data)
   return newdata
+
+
 def enqueue(eval_data):
 
   # string input format
@@ -242,10 +244,10 @@ def enqueue(eval_data):
     )
     context_length.set_shape([FLAGS.batch_size])
     caption_length.set_shape([FLAGS.batch_size])
-    context_id.set_shape([FLAGS.batch_size, FLAGS.max_context_length])
+    context_id.set_shape([FLAGS.batch_size, 1])
     caption_id.set_shape([FLAGS.batch_size, FLAGS.max_output_length])
     answer_id.set_shape([FLAGS.batch_size, FLAGS.max_output_length])
-    context_mask.set_shape([FLAGS.batch_size, FLAGS.max_context_length])
+    context_mask.set_shape([FLAGS.batch_size, 1])
     caption_mask.set_shape([FLAGS.batch_size, FLAGS.max_output_length])
 
     # Ensure that the random shuffling has good mixing properties.
