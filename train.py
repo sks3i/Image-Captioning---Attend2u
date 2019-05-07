@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Apr 29 22:26:15 2019
-
-@author: Sabarish Sivanath
-"""
-
 import numpy as np
 import colorlog
 import time
