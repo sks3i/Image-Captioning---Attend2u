@@ -91,7 +91,8 @@ def get_data(filepath, is_train = True):
     dataset = tf.data.Dataset.from_tensor_slices(filenames)
     dataset = dataset.map(lambda x: _parse_string(x))
     dataset = dataset.shuffle(buffer_size = 40*FLAGS.BATCH_SIZE)
-    dataset = dataset.batch(FLAGS.BATCH_SIZE).prefetch(FLAGS.PREFETCH_MULT*FLAGS.BATCH_SIZE)
+    dataset = dataset.batch(FLAGS.BATCH_SIZE, drop_remainder = True).prefetch(FLAGS.PREFETCH_MULT*FLAGS.BATCH_SIZE)
+    dataset = dataset.repeat(-1)
     
     iterator = dataset.make_one_shot_iterator()
 

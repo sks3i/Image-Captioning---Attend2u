@@ -22,10 +22,10 @@ Save the files to ${project_root}/data
 &nbsp;&nbsp;&nbsp;&nbsp;Run scripts/download_pretrained_resnet_101.sh
 
 2. Extract images features <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run scripts/extract_features.sh
+&nbsp;&nbsp;&nbsp;&nbsp;Run scripts/extract_features.sh
 	
 3. Configure the network <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit configs.py
+&nbsp;&nbsp;&nbsp;&nbsp;Edit configs.py
 	
 4. Train <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;Run train.py

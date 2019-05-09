@@ -61,7 +61,6 @@ class CSMN(object):
     def _init_words_mem(self, words, shape, words_mask, max_length, is_first_time, is_init_B):
         emb_A = tf.nn.embedding_lookup(self.Wea, words)
         emb_C = tf.nn.embedding_lookup(self.Wec, words)
-        
         tiled_word_mask = tf.to_float(tf.tile(tf.reshape(words_mask, [self.batch_size, max_length, 1]), \
                                              [1, 1, self.mem_dim]))
         
