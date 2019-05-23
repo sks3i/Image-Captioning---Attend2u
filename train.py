@@ -3,7 +3,6 @@ import colorlog
 import time
 import logging
 import tensorflow as tf
-tf.enable_eager_execution()
 import configs
 from model.model import CSMN
 from utils.configuration import ModelConfig

@@ -3,6 +3,7 @@ Image Captioning - Attend2u <br />
 
 Implementation of Attend to You: Personalized Image Captioning with Context Sequence Memory Networks <br />
 
+
 ### Requirements
 * Python 3.5
 * TensorFlow > 1.10
@@ -16,6 +17,7 @@ Instagram dataset. <br />
 
 Save the files to ${project_root}/data
 
+
 ### Running Code
 
 1. Download ResNet trained model <br/>
@@ -25,10 +27,18 @@ Save the files to ${project_root}/data
 &nbsp;&nbsp;&nbsp;&nbsp;Run scripts/extract_features.sh
 	
 3. Configure the network <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;Edit configs.py
+&nbsp;&nbsp;&nbsp;&nbsp;Edit model parameters, training/evaluation paramters and data paths in configs.py
 	
 4. Train <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;Run train.py
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python train.py
 
+5. Evaluate <br />
+&nbsp;&nbsp;&nbsp;&nbsp;Run eval.py
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python eval.py
 
-Original code: https://github.com/cesc-park/attend2u
+---
+
+Original code : https://github.com/cesc-park/attend2u
+
+Coco evaluation tools for Python 3 : https://github.com/Illuminati91/pycocoevalcap
