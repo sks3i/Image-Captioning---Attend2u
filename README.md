@@ -11,13 +11,22 @@ Implementation of Attend to You: Personalized Image Captioning with Context Sequ
 
 
 ### Dataset
-Instagram dataset. <br />
-[JSON](https://drive.google.com/uc?export=download&id=0B3xszfcsfVUBdG0tU3BOQWV0a0E) file & 
+Download Instagram dataset. <br />
+&nbsp;&nbsp;&nbsp;&nbsp;[JSON](https://drive.google.com/uc?export=download&id=0B3xszfcsfVUBdG0tU3BOQWV0a0E) file & 
 [Images](https://drive.google.com/uc?export=download&id=0B3xszfcsfVUBVkZGU2oxYVl6aDA) <br />
 
 Save the files to ${project_root}/data
 
+Example of /data directory structure
+```bash
+├── data
+│   ├── caption_dataset
+│   ├── hashtag_dataset
+│   ├── images
+│   ├── json
+│   ├── resnet_pool5_features
 
+```
 ### Running Code
 
 1. Download ResNet trained model <br/>
@@ -30,12 +39,12 @@ Save the files to ${project_root}/data
 &nbsp;&nbsp;&nbsp;&nbsp;Edit model parameters, training/evaluation paramters and data paths in configs.py
 	
 4. Train <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;Run train.py
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python train.py
+&nbsp;&nbsp;&nbsp;&nbsp;Run train.py <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python train.py
 
 5. Evaluate <br />
-&nbsp;&nbsp;&nbsp;&nbsp;Run eval.py
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python eval.py
+&nbsp;&nbsp;&nbsp;&nbsp;Run eval.py <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python eval.py
 
 ---
 
