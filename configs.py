@@ -10,7 +10,7 @@ flags.DEFINE_string("data_dir", "./data/caption_dataset",
 flags.DEFINE_string("img_data_dir", "./data/resnet_pool5_features", 
                     "Image feaature files path")
 
-flags.DEFINE_integer('PREFETCH_MULT', 2,
+flags.DEFINE_integer('PREFETCH_MULT', 4,
                      'Data to prefetch: prefect_mult*batch_size')
 
 flags.DEFINE_string('TRAIN_DIR', './checkpoints', 
@@ -23,7 +23,7 @@ flags.DEFINE_integer("max_context_length", 60,
 flags.DEFINE_integer("max_output_length", 16, 
                      "Max output length.")
 
-flags.DEFINE_integer('BATCH_SIZE', 4, 
+flags.DEFINE_integer('BATCH_SIZE', 64, 
                      "Number of examples to process in a batch." )
 
 flags.DEFINE_integer('vocab_size', 40000, 
@@ -41,7 +41,7 @@ flags.DEFINE_integer('num_channels', 300,
 flags.DEFINE_bool('CKPT_RESTORE', False,
                   'To restore model from checkpoint')
 
-flags.DEFINE_bool('USE_USER_CONTEXT', False,
+flags.DEFINE_bool('USE_USER_CONTEXT', True,
                   "Enable/Disable user context")
 
 flags.DEFINE_float("INIT_LR", 0.001, 
@@ -50,7 +50,7 @@ flags.DEFINE_float("INIT_LR", 0.001,
 flags.DEFINE_float("MAX_GRAD_NORM", 100, 
                    "clip gradients to this norm [100]")
 
-flags.DEFINE_integer("MAX_STEPS", 500000, 
+flags.DEFINE_integer("MAX_STEPS", 5000, 
                      "number of steps to use during training [500000]")
 
 flags.DEFINE_integer("NUM_EPOCHS_PER_DECAY", 8, 
@@ -64,3 +64,23 @@ flags.DEFINE_float("LR_DECAY_FACTOR", 0.8,
 
 flags.DEFINE_integer("NUM_GPUS", 1, 
                      "Number of gpus to use")
+
+
+#Eval
+flags.DEFINE_string('eval_dir', './checkpoints/eval',
+                    'Directory where to write event logs.')
+
+flags.DEFINE_string('eval_data', 'test',
+                    "Either 'test' or 'train_eval'.")
+
+flags.DEFINE_string("train_dir", "./checkpoints", 
+                    "checkpoint directory [checkpoints]")
+
+flags.DEFINE_string("vocab_fname", "./data/caption_dataset/40000.vocab",
+                    "Vocabulary file for evaluation")
+
+flags.DEFINE_integer('eval_interval_secs', 60 * 1,
+                     'How often to run the eval.')
+
+flags.DEFINE_boolean('run_once', True,
+                     'Whether to run eval only once.')

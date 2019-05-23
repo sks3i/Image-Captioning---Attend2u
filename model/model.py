@@ -15,7 +15,7 @@ arg_scope = tf.contrib.framework.arg_scope
 
 
 class CSMN(object):
-    def _embedding_to_hidden(self, inp, size, scope = 'Wh', reuse = True):
+    def _embedding_to_hidden(self, inp, size, scope = 'Wh', reuse = tf.AUTO_REUSE):
         with arg_scope([layers.fully_connected],
                        num_outputs = self.mem_dim,
                        activation_fn = tf.nn.relu,
@@ -127,7 +127,7 @@ class CSMN(object):
         self.bf = tf.get_variable("bf", shape = [self.vocab_size], \
                                   initializer = self.b_initializer)
         
-        
+         
         #Image memeory. Eqn (1) and (2)
         img_mem_A, img_mem_C = self._init_img_mem(conv_cnn)
         
@@ -172,7 +172,7 @@ class CSMN(object):
             
             def test_input():
                 def go_symbol():
-                    return tf.constant(GO_ID, shape = [self.batch_size, 1], dtype = tf.iint32)
+                    return tf.constant(GO_ID, shape = [self.batch_size, 1], dtype = tf.int32)
                 
                 def not_go_symbol():
                     out = out_words_array.read(iterator - 1)
@@ -316,7 +316,6 @@ class CSMN(object):
         self.om_s_a = loop_outputs[2]
         sequence_outputs = tf.transpose(sequence_outputs, perm = [1, 0, 2])
         sequence_outputs = tf.reshape(sequence_outputs, [-1, self.num_channels_total])
-        
         #Eqn 12
         final_outputs = tf.matmul(sequence_outputs, self.Wf) + self.bf
         out_probs = tf.nn.softmax(final_outputs)
@@ -324,29 +323,13 @@ class CSMN(object):
         self.argmax = tf.argmax(self.prob, 2)
         
         output_mask = tf.slice(output_mask,
-                            [0, 0],
-                            [self.batch_size, output_largest_length])
-        
+                               [0, 0],
+                               [self.batch_size, output_largest_length])
+
         answer = tf.slice(answer, [0, 0], [self.batch_size, output_largest_length])
+
         self.loss = sequence_loss([final_outputs],
                                   [tf.reshape(answer, [-1])],
                                   [tf.reshape(tf.to_float(output_mask), [-1])])
         
-        out_words_array.close()
-            
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        out_words_array.close() 

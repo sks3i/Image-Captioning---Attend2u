@@ -3,6 +3,7 @@ import colorlog
 import time
 import logging
 import tensorflow as tf
+tf.enable_eager_execution()
 import configs
 from model.model import CSMN
 from utils.configuration import ModelConfig
@@ -51,7 +52,7 @@ def train():
         format="%(log_color)s[%(levelname)s:%(asctime)s]%(reset)s %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S")
     
-    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction = 0.95)
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction = 0.85)
     tf_sess_config = tf.ConfigProto(allow_soft_placement = True,\
                                     log_device_placement = False, \
                                     gpu_options = gpu_options)

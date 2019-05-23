@@ -8,7 +8,11 @@
 # Last Modified : Thu 19 Mar 2015 09:13:28 PM PDT
 # Authors : Hao Fang <hfang@uw.edu> and Tsung-Yi Lin <tl483@cornell.edu>
 
-from bleu_scorer import BleuScorer
+# Last modified : Wed 22 May 2019 08:10:00 PM EDT
+# By Sabarish Sivanath
+# To support Python 3
+
+from .bleu_scorer import BleuScorer
 
 
 class Bleu:
@@ -18,8 +22,16 @@ class Bleu:
         self._hypo_for_image = {}
         self.ref_for_image = {}
 
-    def compute_score(self, gts, res):
-
+    def compute_score(self, gts, res, score_option = 'closest', verbose = 1):
+        '''
+        Inputs:
+            gts - ground truths
+            res - predictions
+            score_option - {shortest, closest, average}
+            verbose - 1 or 0
+        Outputs:
+            Blue scores
+        '''
         assert(gts.keys() == res.keys())
         imgIds = gts.keys()
 
@@ -36,9 +48,7 @@ class Bleu:
 
             bleu_scorer += (hypo[0], ref)
 
-        #score, scores = bleu_scorer.compute_score(option='shortest')
-        score, scores = bleu_scorer.compute_score(option='closest', verbose=1)
-        #score, scores = bleu_scorer.compute_score(option='average', verbose=1)
+        score, scores = bleu_scorer.compute_score(option = score_option, verbose =verbose)
 
         # return (bleu, bleu_info)
         return score, scores

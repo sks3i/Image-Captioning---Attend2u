@@ -53,7 +53,7 @@ def mask_build_func(length, max_length, cap = None):
 def _parse_string(filename):
     lsplit = tf.string_split([filename], delimiter = ',').values
     context_len = tf.minimum(tf.cast(tf.string_to_number(lsplit[1]), tf.int32), FLAGS.max_context_length)
-    caption_len = tf.minimum(tf.cast(tf.string_to_number(lsplit[2]), tf.int32), FLAGS.max_output_length)
+    caption_len = tf.minimum(tf.cast(tf.string_to_number(lsplit[2]), tf.int32) + 1, FLAGS.max_output_length)
     img_embedding = tf.py_func(numpy_read_func, [lsplit[0]], tf.float32)
     context_id = tf.py_func(token_split_func, [lsplit[3], FLAGS.max_context_length], tf.int32)
     caption_id = tf.py_func(token_split_func, [lsplit[4], FLAGS.max_output_length, 'caption'], tf.int32)
@@ -84,15 +84,17 @@ def _parse_string(filename):
 
 def get_data(filepath, is_train = True):
     filenames = []
+
+    filenames = [l.strip() for l in open(str(Path(FLAGS.data_dir, filepath))).readlines()]
     if is_train:
-        filenames = [l.strip() for l in open(str(Path(FLAGS.data_dir, filepath))).readlines()]
-    
-    shuffle(filenames)
+        shuffle(filenames)
     dataset = tf.data.Dataset.from_tensor_slices(filenames)
     dataset = dataset.map(lambda x: _parse_string(x))
-    dataset = dataset.shuffle(buffer_size = 40*FLAGS.BATCH_SIZE)
+    if is_train:
+        dataset = dataset.shuffle(buffer_size = 40*FLAGS.BATCH_SIZE)
     dataset = dataset.batch(FLAGS.BATCH_SIZE, drop_remainder = True).prefetch(FLAGS.PREFETCH_MULT*FLAGS.BATCH_SIZE)
-    dataset = dataset.repeat(-1)
+    if is_train:
+        dataset = dataset.repeat(-1)
     
     iterator = dataset.make_one_shot_iterator()
 
