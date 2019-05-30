@@ -3,6 +3,7 @@ Image Captioning - Attend2u <br />
 
 Implementation of Attend to You: Personalized Image Captioning with Context Sequence Memory Networks <br />
 
+* Work in progress *
 
 ### Requirements
 * Python 3.5
