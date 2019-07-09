@@ -11,9 +11,9 @@ Implementation of Attend to You: Personalized Image Captioning with Context Sequ
 * Other requirements - check requirements.txt
 
 ### Installation
-conda create -name attend2u python=3.5 pip
-conda activate attend2u
-pip install -r requirements.txt
+conda create -name attend2u python=3.5 pip <br />
+conda activate attend2u <br />
+pip install -r requirements.txt <br />
 
 ### Dataset
 Download Instagram dataset. <br />
