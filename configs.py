@@ -23,7 +23,7 @@ flags.DEFINE_integer("max_context_length", 60,
 flags.DEFINE_integer("max_output_length", 16, 
                      "Max output length.")
 
-flags.DEFINE_integer('BATCH_SIZE', 64, 
+flags.DEFINE_integer('BATCH_SIZE', 4, 
                      "Number of examples to process in a batch." )
 
 flags.DEFINE_integer('vocab_size', 40000, 
@@ -41,7 +41,7 @@ flags.DEFINE_integer('num_channels', 300,
 flags.DEFINE_bool('CKPT_RESTORE', False,
                   'To restore model from checkpoint')
 
-flags.DEFINE_bool('USE_USER_CONTEXT', True,
+flags.DEFINE_bool('USE_USER_CONTEXT', False,
                   "Enable/Disable user context")
 
 flags.DEFINE_float("INIT_LR", 0.001, 

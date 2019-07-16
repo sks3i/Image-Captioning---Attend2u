@@ -36,7 +36,7 @@ Example of /data directory structure
 &nbsp;&nbsp;&nbsp;&nbsp;Run scripts/extract_features.sh
 	
 3. Configure the network <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;Edit model parameters, training/evaluation paramters and data paths in configs.py
+&nbsp;&nbsp;&nbsp;&nbsp;Edit model parameters, training/evaluation parameters and data paths in configs.py
 	
 4. Train <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;Run train.py <br />
