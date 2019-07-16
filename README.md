@@ -3,12 +3,17 @@ Image Captioning - Attend2u <br />
 
 Implementation of Attend to You: Personalized Image Captioning with Context Sequence Memory Networks <br />
 
+* Work in progress *
 
 ### Requirements
 * Python 3.5
 * TensorFlow > 1.10
 * Other requirements - check requirements.txt
 
+### Installation
+conda create -name attend2u python=3.5 pip
+conda activate attend2u
+pip install -r requirements.txt
 
 ### Dataset
 Download Instagram dataset. <br />
